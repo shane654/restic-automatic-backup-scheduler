@@ -15,12 +15,16 @@
 . "$INSTALL_PREFIX/etc/restic/_global.env.sh"
 
 # Envvars below will override those in _global.env.sh if present.
-
-export RESTIC_REPOSITORY="b2:<b2-repo-name>"   # *EDIT* fill with your repo name
+# 获取本机IP及主机名
+ip_address=`ifconfig | grep "inet " | awk '{print $2}' | sed -n '1p'`
+hostname=`hostname`
+# 设置备份目标路径
+export RESTIC_REPOSITORY="b2:<b2-repo-name>:[${ip_address}]${hostname}"   # *EDIT* fill with your repo name
 
 # What to backup. Colon-separated paths e.g. to different mountpoints "/home:/mnt/usb_disk".
 # To backup only your home directory, set "/home/your-user"
-export RESTIC_BACKUP_PATHS=""  # *EDIT* fill conveniently with one or multiple paths
+# 设置需要备份的目录（默认两个目录，宝塔网站目录和宝塔备份目录）
+export RESTIC_BACKUP_PATHS="/www/wwwroot:/www/backup"  # *EDIT* fill conveniently with one or multiple paths
 
 
 # Example below of how to dynamically add a path that is mounted e.g. external USB disk.
